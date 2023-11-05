@@ -41,6 +41,7 @@ class SystemInfoUtil(object):
             'percent': round(virtual_memory.percent),
             'used': virtual_memory.used,
             'used_format': cls.get_format_byte(virtual_memory.used),
+            'cpu_percent': psutil.cpu_percent()
         }
 
     @classmethod
