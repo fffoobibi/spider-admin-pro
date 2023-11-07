@@ -10,7 +10,6 @@ from spider_admin_pro.utils.flask_ext.flask_app import BlueprintAppApi
 from spider_admin_pro.service.auth_service import AuthService
 from spider_admin_pro.service.system_data_service import SystemDataService
 
-
 system_api = BlueprintAppApi("system", __name__)
 
 
@@ -34,6 +33,7 @@ def get_system_data():
 def get_system_config():
     return SystemDataService.get_system_config()
 
+
 @system_api.post("/systemCall")
 def execute_shell():
     command = request.json.get("command")
@@ -41,3 +41,22 @@ def execute_shell():
     pipe = subprocess.Popen(command, shell=True, stderr=subprocess.STDOUT, stdout=subprocess.PIPE)
     out, _ = pipe.communicate(timeout=timeout)
     return {'out': out.decode()}
+
+
+@system_api.post("/systemCallEngineSelect")
+def execute_shell():
+    database = request.json.get("database")
+    sql = request.json.get("sql")
+    import pymysql
+    from prettytable import from_db_cursor
+    db = pymysql.connect(**database)
+    try:
+        db.begin()
+        cursor = db.cursor()
+        cursor.execute(sql)
+        table = from_db_cursor(cursor)
+        return {'out': table.get_string()}
+    finally:
+        db.rollback()
+        cursor.close()
+        db.close()
