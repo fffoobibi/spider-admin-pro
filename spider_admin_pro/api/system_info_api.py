@@ -44,7 +44,7 @@ def execute_shell():
 
 
 @system_api.post("/systemCallEngineSelect")
-def execute_shell():
+def execute_select():
     database = request.json.get("database")
     sql = request.json.get("sql")
     import pymysql
@@ -58,5 +58,7 @@ def execute_shell():
         return {'out': table.get_string()}
     finally:
         db.rollback()
-        cursor.close()
-        db.close()
+        try:
+            cursor.close()
+        finally:
+            db.close()
