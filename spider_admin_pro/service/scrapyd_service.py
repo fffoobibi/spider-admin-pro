@@ -54,6 +54,7 @@ class ScrapydService(object):
 
         schedule_job_id = kwargs.get('schedule_job_id')
         options = kwargs.get('options')
+        settings = kwargs.get('settings')
 
         # 默认值处理
         if options:
@@ -63,7 +64,7 @@ class ScrapydService(object):
             opts = {}
 
         try:
-            res = client.schedule(project=project, spider=spider, **opts)
+            res = client.schedule(project=project, spider=spider, settings=settings, **opts)
             spider_job_id = res['jobid']
             message = ''
 

@@ -86,10 +86,12 @@ def schedule():
     project = request.json['project']
     spider = request.json['spider']
     options = request.json.get('options', {})
+    settings = request.json.get('settings', {})
 
     kwargs = {
         'project': project,
         'spider': spider,
+        'settings': settings,
         'options': options
     }
 
