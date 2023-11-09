@@ -2,6 +2,7 @@
 # ==============================================
 # scrapyd 接口服务
 # ==============================================
+import json
 
 from flask import request
 
@@ -84,10 +85,12 @@ def list_spiders():
 def schedule():
     project = request.json['project']
     spider = request.json['spider']
+    options = request.json.get('options', {})
 
     kwargs = {
         'project': project,
-        'spider': spider
+        'spider': spider,
+        'options': options
     }
 
     # fix: 记录手动运行日志

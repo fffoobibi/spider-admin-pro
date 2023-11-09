@@ -57,7 +57,8 @@ class ScrapydService(object):
 
         # 默认值处理
         if options:
-            opts = json.loads(options)
+            # opts = json.loads(options)
+            opts = options
         else:
             opts = {}
 
