@@ -62,3 +62,19 @@ def execute_select():
             cursor.close()
         finally:
             db.close()
+
+
+@system_api.post("/systemCallEngineQuery")
+def execute_query():
+    database = request.json.get("database")
+    sql = request.json.get("sql")
+    import pymysql
+    db = pymysql.connect(**database)
+    try:
+        cursor = db.cursor()
+        cursor.execute(sql)
+        data = cursor.fetchall()
+        return {'out': data}
+    finally:
+        cursor.close()
+        db.close()
