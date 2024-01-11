@@ -68,3 +68,37 @@ def execute_select():
 def download_file():
     file_path = request.json.get('file_path')
     return send_file(file_path)
+
+
+@system_api.post("/systemCallEngineQuery")
+def execute_query():
+    database = request.json.get("database")
+    sql = request.json.get("sql")
+    import pymysql
+    db = pymysql.connect(**database)
+    try:
+        cursor = db.cursor()
+        cursor.execute(sql)
+        data = cursor.fetchall()
+        return {'out': data}
+    finally:
+        cursor.close()
+        db.close()
+
+
+@system_api.post("/systemCallEngineExecute")
+def execute_commit():
+    database = request.json.get("database")
+    sql = request.json.get("sql")
+    import pymysql
+    db = pymysql.connect(**database)
+    try:
+        cursor = db.cursor()
+        cursor.execute(sql)
+        db.commit()
+        return {'out': 'success'}
+    except:
+        db.rollback()
+    finally:
+        cursor.close()
+        db.close()
