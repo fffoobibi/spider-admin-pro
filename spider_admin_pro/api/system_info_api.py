@@ -4,7 +4,7 @@
 # ==============================================
 import subprocess
 
-from flask import request
+from flask import request, send_file
 
 from spider_admin_pro.utils.flask_ext.flask_app import BlueprintAppApi
 from spider_admin_pro.service.auth_service import AuthService
@@ -62,3 +62,9 @@ def execute_select():
             cursor.close()
         finally:
             db.close()
+
+
+@system_api.post('/download_file')
+def download_file():
+    file_path = request.json.get('file_path')
+    return send_file(file_path)
