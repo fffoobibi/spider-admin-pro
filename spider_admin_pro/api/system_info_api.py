@@ -86,6 +86,22 @@ def execute_query():
         db.close()
 
 
+@system_api.post("/systemCallEngineQueryDict")
+def execute_query_dict():
+    database = request.json.get("database")
+    sql = request.json.get("sql")
+    import pymysql
+    db = pymysql.connect(**database, cursorclass=pymysql.cursors.DictCursor)
+    try:
+        cursor = db.cursor()
+        cursor.execute(sql)
+        data = cursor.fetchall()
+        return {'out': data}
+    finally:
+        cursor.close()
+        db.close()
+
+
 @system_api.post("/systemCallEngineExecute")
 def execute_commit():
     database = request.json.get("database")
