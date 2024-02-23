@@ -61,14 +61,16 @@ class ActionHistoryService(object):
     @classmethod
     def get_address(cls, ip):
         """获取ip地址信息"""
-        info = get_info(ip)
+        try:
+            info = get_info(ip)
 
-        country = info['country']
-        region = info['region']
-        city = info['city']
-        isp = info['isp']
-
-        return f'{country} {region} {city} {isp}'
+            country = info['country']
+            region = info['region']
+            city = info['city']
+            isp = info['isp']
+            return f'{country} {region} {city} {isp}'
+        except:
+            return f'None None None None'
 
     @classmethod
     def get_login_history(cls, page=1, size=20):
