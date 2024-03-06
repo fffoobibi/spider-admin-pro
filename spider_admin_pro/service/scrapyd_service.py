@@ -64,7 +64,7 @@ class ScrapydService(object):
             opts = {}
 
         try:
-            res = client.schedule(project=project, spider=spider, settings=settings, **opts)
+            res = client.schedule(project=project, spider=spider, setting=settings, **opts)
             spider_job_id = res['jobid']
             message = ''
 
